@@ -1,0 +1,31 @@
+# ── Environment & secrets ─────────────────────────────────────────────
+.env
+.env*
+*.pem
+*.key
+
+# ── Documentation & guides (local only — not for repo) ────────────────
+*.md
+
+# ── Test / dev utilities ──────────────────────────────────────────────
+tests/
+
+# ── Composer vendor (upload manually or install on server) ────────────
+# vendor/      ← keep commented if you want to commit vendor/
+#              ← uncomment if server has Composer and you'll run install there
+
+# ── OS / editor junk ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# ── Logs ──────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Uploads (user-generated content — never commit) ───────────────────
+uploads/*
+!uploads/.gitkeep

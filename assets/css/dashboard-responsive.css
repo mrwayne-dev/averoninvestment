@@ -1,0 +1,286 @@
+/* ==========================================================================
+   Averon Investment — dashboard-responsive.css
+   Responsive overrides for all dashboard pages (user + admin)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   LARGE DESKTOP — 4-col KPI row fits, no changes needed above 1280px
+   ========================================================================== */
+
+@media (max-width: 1279px) {
+  .kpi-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* ==========================================================================
+   TABLET LANDSCAPE — sidebar still visible, content adjusts
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  /* Narrow sidebar */
+  .dashboard-sidebar {
+    width: 200px;
+  }
+
+  .dashboard-main {
+    margin-left: 200px;
+  }
+
+  /* Investment plan grid: 2 columns */
+  .investment-plan-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Settings row: full width */
+  .settings-field-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  /* KPI: 3 col */
+  .kpi-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Referral stats */
+  .referral-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+/* ==========================================================================
+   TABLET PORTRAIT / MOBILE — sidebar becomes a slide-in drawer
+   ========================================================================== */
+
+@media (max-width: 767px) {
+
+  /* ---- Sidebar: off-canvas drawer ---- */
+  .dashboard-sidebar {
+    width: var(--sidebar-width);
+    transform: translateX(-100%);
+    box-shadow: none;
+    z-index: 91;
+  }
+
+  .dashboard-sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Main takes full width */
+  .dashboard-main {
+    margin-left: 0;
+  }
+
+  /* Sidebar toggle is hidden on mobile — the bottom dock handles navigation */
+  .sidebar-toggle { display: none; }
+
+  /* ---- Topbar ---- */
+  .dashboard-topbar {
+    padding: 0 var(--space-4);
+    height: 56px;
+    /* Raise above mobile dock (z-index:100) so the profile dropdown
+       is not clipped by the dock's stacking context */
+    z-index: 105;
+  }
+
+  .topbar-title { font-size: var(--text-base); }
+
+  /* ---- Content ---- */
+  .dashboard-content {
+    padding: var(--space-5) var(--space-4);
+    /* Leave space for mobile dock at bottom */
+    padding-bottom: 110px;
+  }
+
+  /* ---- Stats grid: 2 col ---- */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  /* ---- KPI row: 2 col ---- */
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* ---- Investment plans: 1 col ---- */
+  .investment-plan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Wallet card ---- */
+  .wallet-card {
+    padding: var(--space-6);
+  }
+
+  .wallet-card-balance {
+    font-size: var(--text-3xl);
+  }
+
+  .wallet-card-meta {
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .wallet-card-actions {
+    flex-wrap: wrap;
+  }
+
+  .wallet-action-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* ---- Section headers ---- */
+  .dashboard-section-header {
+    flex-wrap: wrap;
+  }
+
+  /* ---- Settings ---- */
+  .settings-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Referral ---- */
+  .referral-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .referral-code-display {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-3);
+  }
+
+  /* ---- Admin table toolbar ---- */
+  .admin-table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-table-search {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .admin-table-filters,
+  .admin-table-actions {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  /* ---- Admin table: hide low-priority columns ---- */
+  .admin-table .col-hide-mobile { display: none; }
+
+  /* ---- Pagination ---- */
+  .admin-table-pagination {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ---- Membership status card ---- */
+  .membership-status-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .membership-perks { justify-content: center; }
+
+  /* ---- User profile header ---- */
+  .user-profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .user-profile-tags { justify-content: center; }
+
+  /* ---- Crypto selector ---- */
+  .crypto-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* ---- Stat overview cards ---- */
+  .stat-overview-card {
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .stat-overview-value {
+    font-size: var(--text-xl);
+  }
+
+  /* ---- Admin tables: enable horizontal scroll so columns don't squeeze ---- */
+  .admin-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Keep enough width for all columns to render properly */
+  .admin-table { min-width: 560px; }
+}
+
+
+/* ==========================================================================
+   SMALL MOBILE — tighten everything further
+   ========================================================================== */
+
+@media (max-width: 479px) {
+
+  /* 1-col stats */
+  .stats-grid { grid-template-columns: 1fr; }
+  .kpi-row    { grid-template-columns: 1fr; }
+
+  /* Referral stats: 1 col */
+  .referral-stats-grid { grid-template-columns: 1fr; }
+
+  /* Full-width crypto selector */
+  .crypto-selector { grid-template-columns: 1fr; }
+
+  /* Wallet balance smaller */
+  .wallet-card-balance { font-size: var(--text-2xl); }
+
+  /* Active investment item: stack */
+  .active-investment-item {
+    flex-wrap: wrap;
+  }
+
+  /* Pagination controls: hide page number buttons, keep prev/next */
+  .pagination-controls .page-btn:not(.prev):not(.next):not(.active) {
+    display: none;
+  }
+
+  /* Topbar: remove gap on very small screens */
+  .dashboard-topbar { gap: var(--space-2); }
+
+  /* Dashboard content: minimal padding */
+  .dashboard-content { padding: var(--space-4) var(--space-3); padding-bottom: 110px; }
+}
+
+
+/* ==========================================================================
+   PRINT — hide sidebar + dock, show content only
+   ========================================================================== */
+
+@media print {
+  .dashboard-sidebar,
+  .dashboard-topbar,
+  .mobile-dock,
+  .sidebar-overlay,
+  #global-loader,
+  #toast-container {
+    display: none !important;
+  }
+
+  .dashboard-main { margin-left: 0; }
+  .dashboard-content { padding: 0; }
+  body.dashboard-body { background: #FFFFFF; }
+}

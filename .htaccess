@@ -1,0 +1,156 @@
+# =============================================================================
+#  Tesla Investment — .htaccess
+#  Apache / LiteSpeed
+# =============================================================================
+
+Options -Indexes
+ServerSignature Off
+
+# ── Force HTTPS ───────────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Redirect HTTP → HTTPS (skip on localhost and local dev TLDs)
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+  RewriteCond %{HTTP_HOST} !\.(test|local|dev|localhost)$ [NC]
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ── Block direct access to sensitive directories ──────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Block /config, /includes, /dbschema (raw access)
+  RewriteRule ^(config|includes|dbschema)(/|$) - [F,L]
+
+  # Block hidden files (e.g. .env, .git)
+  RewriteRule (^|/)\.(?!well-known) - [F,L]
+</IfModule>
+
+# Block direct .php access to internal utility files
+<FilesMatch "^(rate-limiter|helper|email-templates|database|constants|env|email)\.php$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ── Security headers ──────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  # Uncomment on production with a valid SSL certificate:
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://s3.tradingview.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.nowpayments.io https://query1.finance.yahoo.com; frame-src https://s3.tradingview.com;"
+</IfModule>
+
+# ── Clean URLs ────────────────────────────────────────────────────────────────
+# Maps short pretty URLs to the real PHP files.
+# Rules are processed top-to-bottom; first match wins ([L] flag).
+# [QSA] preserves any ?query=string from the original request.
+# Real files and API endpoints are served directly (RewriteCond !-f / !-d).
+# =============================================================================
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # ── HOME (must come before the file/dir passthrough) ──────────────────────
+  # Without this, Apache sees "/" as a real directory and short-circuits below.
+  RewriteRule ^$                              /pages/public/index.php         [L,QSA]
+
+  # Pass through real files (assets, api, uploads, etc.) — never rewrite them
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # ── PUBLIC / AUTH PAGES ───────────────────────────────────────────────────
+  RewriteRule ^about/?$                       /pages/public/about.php         [L]
+  RewriteRule ^contact/?$                     /pages/public/contact.php       [L,QSA]
+  RewriteRule ^investments/?$                 /pages/public/investments.php   [L]
+  RewriteRule ^membership/?$                  /pages/public/membership.php    [L]
+  RewriteRule ^solutions/?$                   /pages/public/solutions.php     [L]
+  RewriteRule ^support/?$                     /pages/public/support.php       [L]
+  RewriteRule ^privacy/?$                     /pages/public/privacy.php       [L]
+  RewriteRule ^terms/?$                       /pages/public/terms.php         [L]
+  RewriteRule ^login/?$                       /pages/public/login.php         [L,QSA]
+  RewriteRule ^register/?$                    /pages/public/sign-up.php       [L,QSA]
+  RewriteRule ^sign-up/?$                     /pages/public/sign-up.php       [L,QSA]
+  RewriteRule ^forgot-password/?$             /pages/public/forgot-password.php [L,QSA]
+  RewriteRule ^verify-email/?$                /pages/public/verify-email.php  [L,QSA]
+  RewriteRule ^logout/?$                      /pages/public/logout.php        [L]
+
+  # ── USER DASHBOARD PAGES ──────────────────────────────────────────────────
+  RewriteRule ^dashboard/?$                   /pages/user/dashboard.php       [L]
+  RewriteRule ^dashboard/wallet/?$            /pages/user/wallet.php          [L,QSA]
+  RewriteRule ^dashboard/investments/?$       /pages/user/investments.php     [L]
+  RewriteRule ^dashboard/membership/?$        /pages/user/membership.php      [L]
+  RewriteRule ^dashboard/account/?$           /pages/user/account.php         [L]
+  RewriteRule ^dashboard/history/?$           /pages/user/payment-history.php [L,QSA]
+  RewriteRule ^dashboard/notifications/?$     /pages/user/notifications.php   [L,QSA]
+
+  # ── ADMIN PAGES ───────────────────────────────────────────────────────────
+  RewriteRule ^admin/?$                       /pages/admin/dashboard.php      [L]
+  RewriteRule ^admin/login/?$                 /pages/admin/login.php          [L,QSA]
+  RewriteRule ^admin/register/?$              /pages/admin/register.php       [L]
+  RewriteRule ^admin/forgot-password/?$       /pages/admin/forgot-password.php [L,QSA]
+  RewriteRule ^admin/reset-password/?$        /pages/admin/reset-password.php [L,QSA]
+  RewriteRule ^admin/users/?$                 /pages/admin/users.php          [L,QSA]
+  RewriteRule ^admin/transactions/?$          /pages/admin/transactions.php   [L,QSA]
+  RewriteRule ^admin/investments/?$           /pages/admin/investments.php    [L]
+  RewriteRule ^admin/membership/?$            /pages/admin/membership.php     [L]
+  RewriteRule ^admin/statistics/?$            /pages/admin/statistics.php     [L,QSA]
+</IfModule>
+
+# ── Compression ───────────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json
+</IfModule>
+
+# ── Browser caching for static assets ────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                  "access plus 7 days"
+  ExpiresByType application/javascript    "access plus 7 days"
+  ExpiresByType image/png                 "access plus 30 days"
+  ExpiresByType image/jpeg                "access plus 30 days"
+  ExpiresByType image/svg+xml             "access plus 30 days"
+  ExpiresByType image/webp                "access plus 30 days"
+  ExpiresByType font/woff2                "access plus 365 days"
+</IfModule>
+
+# ── PHP settings (override php.ini if allowed) ────────────────────────────────
+<IfModule mod_php.c>
+  php_flag display_errors Off
+  php_flag log_errors On
+  php_value session.cookie_httponly 1
+  php_value session.cookie_samesite Strict
+  php_value session.use_strict_mode 1
+</IfModule>
+
+# ── Block common attack patterns ──────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{QUERY_STRING} (<|>|%3C|%3E|union|select|insert|drop|delete|update|cast|exec|script) [NC]
+  RewriteRule .* - [F,L]
+
+  RewriteCond %{QUERY_STRING} \0 [NC]
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# ── Deny access to backup and log files ───────────────────────────────────────
+<FilesMatch "\.(bak|log|sql|sh|swp|orig|tmp)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</FilesMatch>

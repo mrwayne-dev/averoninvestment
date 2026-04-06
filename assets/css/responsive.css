@@ -1,0 +1,439 @@
+/* ==========================================================================
+   Averon Investment — responsive.css
+   Public page responsive overrides (mobile-first breakpoints)
+   Breakpoints: sm=480, md=768, lg=1024, xl=1280
+   ========================================================================== */
+
+
+/* ==========================================================================
+   GLOBAL RESPONSIVE — applies across all pages
+   ========================================================================== */
+
+/* Smaller padding on mobile containers */
+/* Tablet: collapse 3- and 4-col utility grids earlier */
+@media (max-width: 1023px) {
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .container,
+  .container-sm,
+  .container-md {
+    padding: 0 var(--space-4);
+  }
+
+  /* Typography scale-down */
+  h1 { font-size: var(--text-4xl); }
+  h2 { font-size: var(--text-3xl); }
+  h3 { font-size: var(--text-2xl); }
+
+  /* Button full-width stacking */
+  .btn-responsive { width: 100%; }
+
+  /* Section padding */
+  .section    { padding: var(--space-12) 0; }
+  .section-lg { padding: var(--space-16) 0; }
+
+  /* Grid collapse — all utility grids stack at mobile */
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row { grid-template-columns: 1fr; }
+
+  /* Hide desktop-only elements */
+  .desktop-only { display: none !important; }
+}
+
+@media (min-width: 768px) {
+  /* Hide mobile-only elements */
+  .mobile-only { display: none !important; }
+}
+
+
+/* ==========================================================================
+   HEADER / NAV
+   ========================================================================== */
+
+/* Already handled inside header.php <style> block.
+   These rules cover any edge cases. */
+
+@media (max-width: 767px) {
+  .site-header body {
+    padding-top: 56px; /* smaller header on mobile */
+  }
+}
+
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .hero {
+    min-height: unset;
+    padding: var(--space-16) 0;
+    text-align: center;
+  }
+
+  .hero-content { max-width: 100%; }
+
+  .hero-title { font-size: var(--text-5xl); }
+
+  .hero-actions { justify-content: center; }
+
+  .hero-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero { padding: var(--space-12) 0; }
+
+  .hero-title    { font-size: var(--text-4xl); }
+  .hero-subtitle { font-size: var(--text-base); }
+
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; max-width: 360px; margin: 0 auto; }
+
+  .hero-eyebrow { font-size: 10px; }
+}
+
+@media (max-width: 479px) {
+  .hero-title { font-size: var(--text-3xl); }
+}
+
+
+/* ==========================================================================
+   SECTION HEADERS
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .section-header { margin-bottom: var(--space-8); }
+  .section-title  { font-size: var(--text-3xl); }
+  .section-subtitle { font-size: var(--text-base); }
+}
+
+
+/* ==========================================================================
+   FEATURE GRID
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .feature-grid { grid-template-columns: 1fr; }
+  .feature-card { padding: var(--space-6); }
+}
+
+@media (max-width: 1023px) {
+  .feature-grid { grid-template-columns: repeat(1, 1fr); }
+}
+
+
+/* ==========================================================================
+   PLAN / PRICING CARDS
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .plan-grid { grid-template-columns: 1fr; }
+  .plan-card { padding: var(--space-6); }
+  .plan-card:hover { transform: none; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .plan-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+
+/* ==========================================================================
+   STATS GROUP
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .stat-group { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 479px) {
+  .stat-group { grid-template-columns: 1fr; }
+}
+
+
+/* ==========================================================================
+   AUTH CARD
+   ========================================================================== */
+
+@media (max-width: 479px) {
+  .auth-card {
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+  }
+
+  .auth-title { font-size: var(--text-xl); }
+}
+
+
+/* ==========================================================================
+   MODAL / BOTTOM SHEET
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  /* Wider modal on narrow mobile */
+  .bottom-sheet { max-height: 95vh; }
+}
+
+
+/* ==========================================================================
+   TABLE
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  /* Hide lower-priority columns on mobile via utility class */
+  .table .hide-mobile { display: none; }
+
+  .table td,
+  .table th { padding: var(--space-3); }
+}
+
+
+/* ==========================================================================
+   STEPS (multi-step forms)
+   ========================================================================== */
+
+@media (max-width: 479px) {
+  .step-bubble { width: 28px; height: 28px; font-size: var(--text-xs); }
+}
+
+
+/* ==========================================================================
+   TABS
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .tabs { overflow-x: auto; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { white-space: nowrap; }
+}
+
+
+/* ==========================================================================
+   FOOTER (public)
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .footer-newsletter { grid-column: 1 / -1; }
+}
+
+@media (max-width: 767px) {
+  .footer-top { grid-template-columns: 1fr; gap: var(--space-8); }
+  .footer-links-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — STOCK CHART
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .stock-chart-wrap { height: 420px; }
+}
+
+
+/* ==========================================================================
+   PAGE TITLE BAR
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .page-title-bar { padding: var(--space-6) 0 var(--space-4); }
+  .page-title     { font-size: var(--text-2xl); }
+}
+
+
+/* ==========================================================================
+   COPY FIELD
+   ========================================================================== */
+
+@media (max-width: 479px) {
+  .copy-field { flex-direction: column; align-items: flex-start; }
+  .copy-field-value { width: 100%; }
+  .copy-btn { width: 100%; justify-content: center; }
+}
+
+
+/* ==========================================================================
+   NOTIFICATION / TOAST
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  #toast-container {
+    top: auto;
+    bottom: 100px; /* above mobile dock */
+    right: var(--space-4);
+    left: var(--space-4);
+  }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — STATS BAND
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .stats-band-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  .stats-band-divider { display: none; }
+}
+
+@media (max-width: 479px) {
+  .stats-band-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — HERO SPLIT
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+    text-align: center;
+    min-height: unset;
+    padding: var(--space-16) 0;
+    gap: var(--space-10);
+  }
+
+  .hero-split-left { align-items: center; }
+  .hero-split-subtitle { max-width: 100%; }
+  .hero-split-right { display: none; } /* hide visual card on tablet/mobile */
+}
+
+@media (max-width: 767px) {
+  .hero-split {
+    padding: var(--space-12) 0;
+    gap: var(--space-8);
+  }
+
+  .hero-split-title { font-size: var(--text-4xl); }
+
+  .hero-split-actions { justify-content: center; }
+}
+
+@media (max-width: 479px) {
+  .hero-split-title { font-size: var(--text-3xl); }
+
+  .hero-split-actions { flex-direction: column; }
+  .hero-split-actions .btn { width: 100%; max-width: 360px; margin: 0 auto; }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — INVESTMENT PLAN CARDS
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .plan-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 479px) {
+  .plan-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — MEMBERSHIP GRID
+   ========================================================================== */
+
+@media (max-width: 1199px) {
+  .membership-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .membership-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — HOW IT WORKS
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .how-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .how-steps::before { display: none; }
+}
+
+@media (max-width: 767px) {
+  .how-steps {
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+  }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — TESTIMONIALS
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .testimonials-grid { grid-template-columns: 1fr; }
+
+  .testimonials-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — CTA SECTION
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .cta-actions { flex-direction: column; }
+  .cta-actions .btn { width: 100%; max-width: 360px; margin: 0 auto; }
+}
+
+
+/* ==========================================================================
+   HOMEPAGE — LP GRIDS (missing tablet breakpoints)
+   main.css handles ≤1024px for hero/plans/mem. These cover the gaps.
+   ========================================================================== */
+
+/* Tablet (768–1023px): grids that are still too wide */
+@media (max-width: 1023px) {
+  /* 4-col stats band → 2×2 on tablet */
+  .lp-stats-grid  { grid-template-columns: repeat(2, 1fr); }
+
+  /* 2-col stock section → single column on tablet */
+  .lp-stock-inner { grid-template-columns: 1fr; }
+
+  /* 3-step row → 2-col on tablet, connector line hidden */
+  .lp-how-steps              { grid-template-columns: repeat(2, 1fr); }
+  .lp-how-steps::before      { display: none; }
+}
+
+/* Very small phones (≤479px) */
+@media (max-width: 479px) {
+  /* Stats band → single column */
+  .lp-stats-grid { grid-template-columns: 1fr; }
+  .lp-stats-item { border-right: none; }
+
+  /* How-steps → single column */
+  .lp-how-steps { grid-template-columns: 1fr; }
+}
