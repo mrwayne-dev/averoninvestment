@@ -11,5 +11,17 @@
     "not firefox <= 146",
     "not safari <= 26.2",
     "not samsung <= 29"
-  ]
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "-webkit-text-size-adjust",
+          "user-select"
+        ]
+      }
+    ],
+    "css-prefix-order": "off"
+  }
 }
